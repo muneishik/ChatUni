@@ -18,8 +18,13 @@ public class InRoomChat : Photon.MonoBehaviour
     {
         if (this.AlignBottom)
         {
+
             this.GuiRect.y = Screen.height - this.GuiRect.height;
         }
+		this.GuiRect.x = 0;
+		this.GuiRect.y = 0;
+		this.GuiRect.width = Screen.width;
+		this.GuiRect.height = Screen.height;
     }
 
     public void OnGUI()
