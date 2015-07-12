@@ -1,77 +1,56 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 [RequireComponent(typeof(PhotonView))]
 public class InRoomChat : Photon.MonoBehaviour 
 {
-    public Rect GuiRect = new Rect(0,0, 250,300);
+	//UI.
+	[SerializeField] RectTransform chatPanel;
+	[SerializeField] InputField inputField;
+	[SerializeField] Button button;
+	[SerializeField] RectTransform content;
+	//Prefab.
+	[SerializeField] RectTransform prefab = null;
+
     public bool IsVisible = true;
-    public bool AlignBottom = false;
     public List<string> messages = new List<string>();
     private string inputLine = "";
     private Vector2 scrollPos = Vector2.zero;
+	private bool isOnce = false;
 
     public static readonly string ChatRPC = "Chat";
 
     public void Start()
     {
-        if (this.AlignBottom)
-        {
-
-            this.GuiRect.y = Screen.height - this.GuiRect.height;
-        }
-		this.GuiRect.x = 0;
-		this.GuiRect.y = 0;
-		this.GuiRect.width = Screen.width;
-		this.GuiRect.height = Screen.height;
+		OnJoinedChatRoom(false);
     }
 
-    public void OnGUI()
-    {
-        if (!this.IsVisible || PhotonNetwork.connectionStateDetailed != PeerState.Joined)
-        {
-            return;
-        }
-        
-        if (Event.current.type == EventType.KeyDown && (Event.current.keyCode == KeyCode.KeypadEnter || Event.current.keyCode == KeyCode.Return))
-        {
-            if (!string.IsNullOrEmpty(this.inputLine))
-            {
-                this.photonView.RPC("Chat", PhotonTargets.All, this.inputLine);
-                this.inputLine = "";
-                GUI.FocusControl("");
-                return; // printing the now modified list would result in an error. to avoid this, we just skip this single frame
-            }
-            else
-            {
-                GUI.FocusControl("ChatInput");
-            }
-        }
+	public void Update()
+	{
+		if (!this.IsVisible || PhotonNetwork.connectionStateDetailed != PeerState.Joined)
+		{
+			return;
+		}
 
-        GUI.SetNextControlName("");
-        GUILayout.BeginArea(this.GuiRect);
+		if (!isOnce) 
+		{
+			OnJoinedChatRoom(true);
+			isOnce = true; 
+		}
 
-        scrollPos = GUILayout.BeginScrollView(scrollPos);
-        GUILayout.FlexibleSpace();
-        for (int i = messages.Count - 1; i >= 0; i--)
-        {
-            GUILayout.Label(messages[i]);
-        }
-        GUILayout.EndScrollView();
+		if (Input.GetKey (KeyCode.Return)) 
+		{
+			OnClickSendButton();
+		}
+		this.inputLine = inputField.text;
+	}
 
-        GUILayout.BeginHorizontal();
-        GUI.SetNextControlName("ChatInput");
-        inputLine = GUILayout.TextField(inputLine);
-        if (GUILayout.Button("Send", GUILayout.ExpandWidth(false)))
-        {
-            this.photonView.RPC("Chat", PhotonTargets.All, this.inputLine);
-            this.inputLine = "";
-            GUI.FocusControl("");
-        }
-        GUILayout.EndHorizontal();
-        GUILayout.EndArea();
-    }
+	void OnJoinedChatRoom(bool isActive)
+	{
+		chatPanel.gameObject.SetActive (isActive);
+	}
 
     [PunRPC]
     public void Chat(string newLine, PhotonMessageInfo mi)
@@ -97,4 +76,19 @@ public class InRoomChat : Photon.MonoBehaviour
     {
         this.messages.Add(newLine);
     }
+
+	public void OnClickSendButton()
+	{
+		if (this.inputLine.Length == 0)
+			return;
+		this.inputLine = inputField.text;
+		this.photonView.RPC("Chat", PhotonTargets.All, this.inputLine);
+
+		var item = GameObject.Instantiate(prefab) as RectTransform;
+		item.GetChild(0).GetComponent<Text>().text = this.messages[this.messages.Count-1];
+		item.SetParent(content.transform, false);
+
+		this.inputLine = "";
+		inputField.text = "";
+	}
 }
