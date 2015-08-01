@@ -68,7 +68,7 @@ public class InRoomChat : Photon.MonoBehaviour
             }
             else
             {
-                senderName = "player " + mi.sender.ID;
+                senderName = GameController.Instance.playerName /*+ " [ID:" + mi.sender.ID + "]"*/;
             }
         }
 

@@ -24,7 +24,7 @@ public class RandomMatchmaker : Photon.PunBehaviour
 
     public override void OnJoinedRoom()
     {
-		string[] avatar = new string[]{"droi","uni_hum","uni_gen","monsterprefab"};
+		string[] avatar = new string[]{"uni_gen"};
 		int i = Random.Range (0, avatar.Length);
 
         GameObject monster = PhotonNetwork.Instantiate(avatar[i], Vector3.zero, Quaternion.identity, 0);
