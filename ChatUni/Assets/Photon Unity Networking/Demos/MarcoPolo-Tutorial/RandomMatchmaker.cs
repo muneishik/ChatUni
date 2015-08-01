@@ -3,6 +3,7 @@ using UnityEngine;
 public class RandomMatchmaker : Photon.PunBehaviour
 {
     private PhotonView myPhotonView;
+	private myThirdPersonController charaController;
 
     // Use this for initialization
     void Start()
@@ -27,7 +28,9 @@ public class RandomMatchmaker : Photon.PunBehaviour
 		int i = Random.Range (0, avatar.Length);
 
         GameObject monster = PhotonNetwork.Instantiate(avatar[i], Vector3.zero, Quaternion.identity, 0);
-        monster.GetComponent<myThirdPersonController>().isControllable = true;
+		charaController = monster.GetComponent<myThirdPersonController> ();
+		charaController.isControllable = true;
+
         myPhotonView = monster.GetComponent<PhotonView>();
     }
 

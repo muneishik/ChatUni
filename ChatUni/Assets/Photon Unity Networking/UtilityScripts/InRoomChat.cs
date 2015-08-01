@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(PhotonView))]
 public class InRoomChat : Photon.MonoBehaviour 
@@ -13,6 +15,8 @@ public class InRoomChat : Photon.MonoBehaviour
 	[SerializeField] RectTransform content;
 	//Prefab.
 	[SerializeField] RectTransform prefab = null;
+	public EventSystem eventSystem;
+	public Action onChangeInputActive;
 
     public bool IsVisible = true;
     public List<string> messages = new List<string>();
@@ -25,8 +29,7 @@ public class InRoomChat : Photon.MonoBehaviour
     public void Start()
     {
 		OnJoinedChatRoom(false);
-    }
-
+    }		
 	public void Update()
 	{
 		if (!this.IsVisible || PhotonNetwork.connectionStateDetailed != PeerState.Joined)
@@ -79,8 +82,13 @@ public class InRoomChat : Photon.MonoBehaviour
 
 	public void OnClickSendButton()
 	{
-		if (this.inputLine.Length == 0)
+		this.inputLine = this.inputLine.Replace("\r", "").Replace("\n", "");
+		if (this.inputLine.Length == 0) 
+		{
+			this.inputLine = "";
+			inputField.text = inputField.text.Replace("\r", "").Replace("\n", "");
 			return;
+		}
 		this.inputLine = inputField.text;
 		this.photonView.RPC("Chat", PhotonTargets.All, this.inputLine);
 
