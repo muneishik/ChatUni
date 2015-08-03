@@ -18,13 +18,17 @@ public class InRoomChat : Photon.MonoBehaviour
 	public EventSystem eventSystem;
 	public Action onChangeInputActive;
 
+	public RandomMatchmaker randomMatchmaker;
+
     public bool IsVisible = true;
     public List<string> messages = new List<string>();
     private string inputLine = "";
     private Vector2 scrollPos = Vector2.zero;
 	private bool isOnce = false;
+	private bool isActiveInputField = false;
 
     public static readonly string ChatRPC = "Chat";
+	DateTime dateTime;
 
     public void Start()
     {
@@ -48,6 +52,26 @@ public class InRoomChat : Photon.MonoBehaviour
 			OnClickSendButton();
 		}
 		this.inputLine = inputField.text;
+
+		if (eventSystem.currentSelectedGameObject == null )
+		{
+			randomMatchmaker.charaController.isControllable = true;
+			//isActiveInputField = false;
+			return;
+		}
+
+		//TODO:毎フレームの文字列比較を避けたい.
+		if( /*isActiveInputField == false &&*/ eventSystem.currentSelectedGameObject.tag == "InputFieldUI")
+		{
+			randomMatchmaker.charaController.isControllable = false;
+			//isActiveInputField = true;
+		}
+		else
+		{
+			randomMatchmaker.charaController.isControllable = true;
+			//isActiveInputField = false;
+		}
+			
 	}
 
 	void OnJoinedChatRoom(bool isActive)
@@ -68,7 +92,8 @@ public class InRoomChat : Photon.MonoBehaviour
             }
             else
             {
-                senderName = GameController.Instance.playerName /*+ " [ID:" + mi.sender.ID + "]"*/;
+				dateTime = DateTime.Now;
+				senderName = dateTime.ToString("HH:mm") + " [ID:" + mi.sender.ID + "]" + GameController.Instance.playerName;
             }
         }
 
@@ -82,6 +107,7 @@ public class InRoomChat : Photon.MonoBehaviour
 
 	public void OnClickSendButton()
 	{
+		//改行文字対策.
 		this.inputLine = this.inputLine.Replace("\r", "").Replace("\n", "");
 		if (this.inputLine.Length == 0) 
 		{
@@ -89,9 +115,12 @@ public class InRoomChat : Photon.MonoBehaviour
 			inputField.text = inputField.text.Replace("\r", "").Replace("\n", "");
 			return;
 		}
+
+		//メッセージを送信.
 		this.inputLine = inputField.text;
 		this.photonView.RPC("Chat", PhotonTargets.All, this.inputLine);
 
+		//送信したメッセージを画面上に表示.
 		var item = GameObject.Instantiate(prefab) as RectTransform;
 		item.GetChild(0).GetComponent<Text>().text = this.messages[this.messages.Count-1];
 		item.SetParent(content.transform, false);

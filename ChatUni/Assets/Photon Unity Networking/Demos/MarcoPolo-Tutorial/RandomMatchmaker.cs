@@ -3,9 +3,8 @@ using UnityEngine;
 public class RandomMatchmaker : Photon.PunBehaviour
 {
     private PhotonView myPhotonView;
-	private myThirdPersonController charaController;
+	public myThirdPersonController charaController{get; private set;}
 
-    // Use this for initialization
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings("0.1");
