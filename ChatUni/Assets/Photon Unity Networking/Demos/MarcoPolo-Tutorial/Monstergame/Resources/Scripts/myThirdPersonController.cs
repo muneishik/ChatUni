@@ -9,4 +9,6 @@ public class myThirdPersonController : ThirdPersonController
     // Extending the ThirdPersonController into "myThirdPersonController" make sure it uses the same name as in Tutorial.
     
     // Please bear with us for this little fake.
+	
+	public string playerName = string.Empty;
 }
