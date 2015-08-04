@@ -7,8 +7,12 @@ public class NameText : MonoBehaviour
 	public Transform playerTransform;
 	public Camera mainCamera;
 
+	public RectTransform parentRectTrans;
 	[SerializeField] RectTransform thisRectTransform;
+	
 	[SerializeField] Text nameText;
+
+	public Vector3 offset = Vector3.zero;
 	
 	public string nameStr = string.Empty;
 
@@ -22,6 +26,14 @@ public class NameText : MonoBehaviour
 	void Update () 
 	{
 		if (nameText.text.Length == 0) return;
-		thisRectTransform.anchoredPosition3D = mainCamera.WorldToScreenPoint(playerTransform.position);
+		UpdateUiLocalPosFromTargetPos();
+	}
+
+	void UpdateUiLocalPosFromTargetPos()
+	{
+		var screenPos = mainCamera.WorldToScreenPoint(playerTransform.position + offset);
+		var localPos = Vector2.zero;
+		RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTrans, screenPos, mainCamera, out localPos);
+		thisRectTransform.localPosition = localPos;
 	}
 }
