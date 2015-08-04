@@ -8,32 +8,34 @@ public class NameText : MonoBehaviour
 	public Camera mainCamera;
 
 	public RectTransform parentRectTrans;
+
 	[SerializeField] RectTransform thisRectTransform;
-	
 	[SerializeField] Text nameText;
 
-	public Vector3 offset = Vector3.zero;
-	
-	public string nameStr = string.Empty;
+	public Vector2 offset = Vector2.zero;
 
-	// Use this for initialization
+	/// <summary>
+	/// 初期化は生成時に行う.(RandomMachmaker.cs).
+	/// </summary>
 	public void Initialize (string name) 
 	{
 		nameText.text = name;
 	}
 	
-	// Update is called once per frame
 	void Update () 
 	{
 		if (nameText.text.Length == 0) return;
 		UpdateUiLocalPosFromTargetPos();
 	}
 
+	/// <summary>
+	/// キャラの上に名前を表示.
+	/// </summary>
 	void UpdateUiLocalPosFromTargetPos()
 	{
-		var screenPos = mainCamera.WorldToScreenPoint(playerTransform.position + offset);
-		var localPos = Vector2.zero;
+		Vector3 screenPos = mainCamera.WorldToScreenPoint(playerTransform.position);
+		Vector2 localPos = Vector2.zero;
 		RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTrans, screenPos, mainCamera, out localPos);
-		thisRectTransform.localPosition = localPos;
+		thisRectTransform.localPosition = localPos + offset;
 	}
 }
