@@ -33,18 +33,11 @@ public class RandomMatchmaker : Photon.PunBehaviour
         GameObject monster = PhotonNetwork.Instantiate(avatar[i], Vector3.zero, Quaternion.identity, 0);
 		charaController = monster.GetComponent<myThirdPersonController> ();
 		charaController.isControllable = true;
-
+		charaController.playerName = GameController.Instance.playerName;
+		charaController.mainCamera = mainCamera;
+		charaController.SetOffset();
         myPhotonView = monster.GetComponent<PhotonView>();
 
-		//追加したところ(キャラを生成して、各参照を保持).
-		GameObject textObj = GameObject.Instantiate(nameTextPrefab.viewObject, Vector3.zero, Quaternion.identity) as GameObject;
-		Transform textTransform = textObj.GetComponent<Transform>();
-		textTransform.SetParent(textList,false);
-		NameText nameText = textObj.GetComponent<NameText>();
-		nameText.playerTransform = textTransform;
-		nameText.mainCamera = mainCamera;
-		nameText.parentRectTrans = textList.GetComponent<RectTransform>();
-		nameText.Initialize(GameController.Instance.playerName);//入ってきた人物の名前にする.
     }
 
     public void OnGUI()

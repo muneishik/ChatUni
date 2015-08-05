@@ -1,3 +1,5 @@
+using UnityEngine;
+using System.Collections;
 
 public class myThirdPersonController : ThirdPersonController
 {
@@ -11,4 +13,26 @@ public class myThirdPersonController : ThirdPersonController
     // Please bear with us for this little fake.
 	
 	public string playerName = string.Empty;
+	public Camera mainCamera = null;
+	GUIStyle style;
+	Vector2 offset;
+
+	public void SetOffset()
+	{
+		style = new GUIStyle();
+		style.normal.textColor = Color.white;
+		style.fontSize = Screen.width/38;
+		offset = style.CalcSize(new GUIContent(playerName));
+	}
+
+	void OnGUI()
+	{
+		//ワールド座標からスクリーン座標を取得
+		Vector3 screenPos = mainCamera.WorldToScreenPoint(transform.position);
+
+		if (screenPos.z > 0)
+		{
+			GUI.Label(new Rect(screenPos.x - offset.x / 2 /*名前の幅の半分ずらす*/, Screen.height - screenPos.y, 200, 30), playerName, style);
+		}
+	}
 }
