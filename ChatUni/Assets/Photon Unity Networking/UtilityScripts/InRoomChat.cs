@@ -36,7 +36,7 @@ public class InRoomChat : Photon.MonoBehaviour
     }		
 	public void Update()
 	{
-		if (!this.IsVisible || PhotonNetwork.connectionStateDetailed != PeerState.Joined)
+		if ( !this.IsVisible || PhotonNetwork.connectionStateDetailed != PeerState.Joined )
 		{
 			return;
 		}
@@ -93,7 +93,7 @@ public class InRoomChat : Photon.MonoBehaviour
             else
             {
 				dateTime = DateTime.Now;
-				senderName = dateTime.ToString("HH:mm") + " [ID:" + mi.sender.ID + "]" + GameController.Instance.playerName;
+				senderName = dateTime.ToString("HH:mm") + " [ID:" + mi.sender.ID + "] " + GameController.Instance.playerName;
             }
         }
 

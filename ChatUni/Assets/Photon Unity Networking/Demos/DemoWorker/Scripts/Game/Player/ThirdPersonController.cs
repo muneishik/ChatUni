@@ -317,6 +317,12 @@ public class ThirdPersonController : MonoBehaviour
             CharacterController controller = GetComponent<CharacterController>();
             collisionFlags = controller.Move(movement);
         }
+		else
+		{
+			velocity = Vector3.zero;
+			lastPos = transform.position;
+			_characterState = CharacterState.Idle;
+		}
         velocity = (transform.position - lastPos)*25;
 
         // ANIMATION sector
