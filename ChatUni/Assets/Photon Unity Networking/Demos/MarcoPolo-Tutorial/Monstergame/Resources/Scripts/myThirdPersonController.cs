@@ -23,6 +23,7 @@ public class myThirdPersonController : ThirdPersonController
 		style.normal.textColor = Color.white;
 		style.fontSize = Screen.width/38;
 		offset = style.CalcSize(new GUIContent(playerName));
+		offset = new Vector3(offset.x,Screen.height / 7);
 	}
 
 	void OnGUI()
@@ -32,7 +33,7 @@ public class myThirdPersonController : ThirdPersonController
 
 		if (screenPos.z > 0)
 		{
-			GUI.Label(new Rect(screenPos.x - offset.x / 2 /*–¼‘O‚Ì•‚Ì”¼•ª‚¸‚ç‚·*/, Screen.height - screenPos.y, 200, 30), playerName, style);
+			GUI.Label(new Rect(screenPos.x - offset.x / 2 , Screen.height - screenPos.y - offset.y, 220, 30), playerName, style);
 		}
 	}
 }
