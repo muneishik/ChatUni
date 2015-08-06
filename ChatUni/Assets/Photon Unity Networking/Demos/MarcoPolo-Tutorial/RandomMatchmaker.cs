@@ -36,6 +36,7 @@ public class RandomMatchmaker : Photon.PunBehaviour
 		charaController.playerName = GameController.Instance.playerName;
 		charaController.mainCamera = mainCamera;
 		charaController.SetOffset();
+
         myPhotonView = monster.GetComponent<PhotonView>();
 
     }

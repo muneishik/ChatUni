@@ -64,6 +64,7 @@ public class InRoomChat : Photon.MonoBehaviour
 		if( /*isActiveInputField == false &&*/ eventSystem.currentSelectedGameObject.tag == "InputFieldUI")
 		{
 			randomMatchmaker.charaController.isControllable = false;
+			randomMatchmaker.charaController.SetIdleState();
 			//isActiveInputField = true;
 		}
 		else

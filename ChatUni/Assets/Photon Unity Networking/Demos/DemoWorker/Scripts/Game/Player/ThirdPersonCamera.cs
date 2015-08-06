@@ -35,10 +35,19 @@ public class ThirdPersonCamera : MonoBehaviour
     private ThirdPersonController controller;
     private float targetHeight = 100000.0f;
 
+	public static bool isOnce = false; 
+
     private Camera m_CameraTransformCamera;
 
     void OnEnable()
     {
+		if (isOnce)
+		{
+			this.enabled = false;
+			return;
+		}
+		isOnce = true;
+
         if( !cameraTransform && Camera.main )
             cameraTransform = Camera.main.transform;
         if( !cameraTransform )

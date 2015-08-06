@@ -89,6 +89,20 @@ public class ThirdPersonController : MonoBehaviour
     private float lastGroundedTime = 0.0f;
     public bool isControllable = true;
 
+	CharacterController _controller = null;
+
+	CharacterController controller
+	{
+		get
+		{
+			if (_controller == null)
+			{
+				_controller = GetComponent<CharacterController>();
+			}
+			return _controller;
+		}
+	}
+
     void Awake()
     {
         moveDirection = transform.TransformDirection(Vector3.forward);
@@ -314,14 +328,14 @@ public class ThirdPersonController : MonoBehaviour
             movement *= Time.deltaTime;
 
             // Move the controller
-            CharacterController controller = GetComponent<CharacterController>();
             collisionFlags = controller.Move(movement);
         }
 		else
 		{
-			velocity = Vector3.zero;
-			lastPos = transform.position;
-			_characterState = CharacterState.Idle;
+			//velocity = Vector3.zero;
+			//lastPos = transform.position;
+			//_characterState = CharacterState.Idle;
+			;
 		}
         velocity = (transform.position - lastPos)*25;
 
@@ -479,5 +493,9 @@ public class ThirdPersonController : MonoBehaviour
         gameObject.tag = "Player";
     }
 
+	public void SetIdleState()
+	{
+		_characterState = CharacterState.Idle;
+	}
 
 }
