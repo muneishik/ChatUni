@@ -36,7 +36,7 @@ public class InRoomChat : Photon.MonoBehaviour
     }		
 	public void Update()
 	{
-		if (!this.IsVisible || PhotonNetwork.connectionStateDetailed != PeerState.Joined)
+		if ( !this.IsVisible || PhotonNetwork.connectionStateDetailed != PeerState.Joined )
 		{
 			return;
 		}
@@ -64,6 +64,7 @@ public class InRoomChat : Photon.MonoBehaviour
 		if( /*isActiveInputField == false &&*/ eventSystem.currentSelectedGameObject.tag == "InputFieldUI")
 		{
 			randomMatchmaker.charaController.isControllable = false;
+			randomMatchmaker.charaController.SetIdleState();
 			//isActiveInputField = true;
 		}
 		else
@@ -93,7 +94,7 @@ public class InRoomChat : Photon.MonoBehaviour
             else
             {
 				dateTime = DateTime.Now;
-				senderName = dateTime.ToString("HH:mm") + " [ID:" + mi.sender.ID + "]" + GameController.Instance.playerName;
+				senderName = dateTime.ToString("HH:mm") + " [ID:" + mi.sender.ID + "] " + GameController.Instance.playerName;
             }
         }
 

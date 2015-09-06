@@ -4,7 +4,11 @@ public class RandomMatchmaker : Photon.PunBehaviour
 {
     private PhotonView myPhotonView;
 	public myThirdPersonController charaController{get; private set;}
+	[SerializeField] Prefab nameTextPrefab;
+	[SerializeField] Transform textList;
 
+	[SerializeField] Camera mainCamera;
+	
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings("0.1");
@@ -29,8 +33,12 @@ public class RandomMatchmaker : Photon.PunBehaviour
         GameObject monster = PhotonNetwork.Instantiate(avatar[i], Vector3.zero, Quaternion.identity, 0);
 		charaController = monster.GetComponent<myThirdPersonController> ();
 		charaController.isControllable = true;
+		charaController.playerName = GameController.Instance.playerName;
+		charaController.mainCamera = mainCamera;
+		charaController.SetOffset();
 
         myPhotonView = monster.GetComponent<PhotonView>();
+
     }
 
     public void OnGUI()
