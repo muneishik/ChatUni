@@ -5,6 +5,7 @@ public class myThirdPersonController : ThirdPersonController
 {	
 	public string playerName = "TempName";
 	public Camera mainCamera = null;
+	public Transform nameTransform;
 
 	GUIStyle style;
 	Vector2 offset;
@@ -12,6 +13,8 @@ public class myThirdPersonController : ThirdPersonController
 	void Start()
 	{
 		mainCamera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
+		PhotonView photonView = GetComponent<PhotonView> ();
+		playerName = photonView.owner.name;
 		SetOffset ();
 	}
 
@@ -26,10 +29,10 @@ public class myThirdPersonController : ThirdPersonController
 
 	void OnGUI()
 	{
-		Vector3 screenPos = mainCamera.WorldToScreenPoint(transform.position);
+		Vector3 screenPos = mainCamera.WorldToScreenPoint(nameTransform.position);
 		if (screenPos.z > 0)
 		{
-			GUI.Label(new Rect(screenPos.x - offset.x / 2 , Screen.height - screenPos.y - offset.y, 220, 30), playerName, style);
+			GUI.Label(new Rect(screenPos.x - offset.x / 2 , Screen.height - screenPos.y /*- offset.y*/, 220, 30), playerName, style);
 		}
 	}
 
