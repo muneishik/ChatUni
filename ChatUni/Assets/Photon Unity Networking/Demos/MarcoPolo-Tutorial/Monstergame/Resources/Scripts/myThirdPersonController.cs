@@ -32,7 +32,7 @@ public class myThirdPersonController : ThirdPersonController
 		Vector3 screenPos = mainCamera.WorldToScreenPoint(nameTransform.position);
 		if (screenPos.z > 0)
 		{
-			GUI.Label(new Rect(screenPos.x - offset.x / 2 , Screen.height - screenPos.y /*- offset.y*/, 220, 30), playerName, style);
+			GUI.Label(new Rect(screenPos.x - offset.x / 2 , Screen.height - screenPos.y - offset.y/2, 220, 30), playerName, style);
 		}
 	}
 

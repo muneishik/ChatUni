@@ -44,7 +44,7 @@ public class InRoomChat : Photon.MonoBehaviour
 		if (!isOnce) 
 		{
 			OnJoinedChatRoom(true);
-			isOnce = true; 
+			isOnce = true;
 		}
 
 		if (Input.GetKey (KeyCode.Return)) 
@@ -99,6 +99,10 @@ public class InRoomChat : Photon.MonoBehaviour
         }
 
         this.messages.Add(senderName +": " + newLine);
+		//送信したメッセージを画面上に表示.
+		var item = GameObject.Instantiate(prefab) as RectTransform;
+		item.GetChild(0).GetComponent<Text>().text = this.messages[this.messages.Count-1];
+		item.SetParent(content.transform, false);
     }
 
     public void AddLine(string newLine)
@@ -121,10 +125,7 @@ public class InRoomChat : Photon.MonoBehaviour
 		this.inputLine = inputField.text;
 		this.photonView.RPC("Chat", PhotonTargets.All, this.inputLine);
 
-		//送信したメッセージを画面上に表示.
-		var item = GameObject.Instantiate(prefab) as RectTransform;
-		item.GetChild(0).GetComponent<Text>().text = this.messages[this.messages.Count-1];
-		item.SetParent(content.transform, false);
+
 
 		this.inputLine = "";
 		inputField.text = "";

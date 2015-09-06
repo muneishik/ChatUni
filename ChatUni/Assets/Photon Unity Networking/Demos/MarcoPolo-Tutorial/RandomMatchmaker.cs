@@ -61,18 +61,18 @@ public class RandomMatchmaker : Photon.PunBehaviour
     {
         GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
 
-        if (PhotonNetwork.connectionStateDetailed == PeerState.Joined)
-        {
-            bool shoutMarco = GameLogic.playerWhoIsIt == PhotonNetwork.player.ID;
-
-            if (shoutMarco && GUILayout.Button("Marco!"))
-            {
-                myPhotonView.RPC("Marco", PhotonTargets.All);
-            }
-            if (!shoutMarco && GUILayout.Button("Polo!"))
-            {
-                myPhotonView.RPC("Polo", PhotonTargets.All);
-            }
-        }
+//        if (PhotonNetwork.connectionStateDetailed == PeerState.Joined)
+//        {
+//            bool shoutMarco = GameLogic.playerWhoIsIt == PhotonNetwork.player.ID;
+//
+//            if (shoutMarco && GUILayout.Button("Marco!"))
+//            {
+//                myPhotonView.RPC("Marco", PhotonTargets.All);
+//            }
+//            if (!shoutMarco && GUILayout.Button("Polo!"))
+//            {
+//                myPhotonView.RPC("Polo", PhotonTargets.All);
+//            }
+//        }
     }
 }
