@@ -2,20 +2,18 @@ using UnityEngine;
 using System.Collections;
 
 public class myThirdPersonController : ThirdPersonController
-{
-    // This class replaces the JS version of the same name for this tutorial.
-    
-    // Actually, the ThirdPersonController works (more or less) the same way as it's JS counterpart
-    // but it's much easier to integrate being in C# as well (no need to move files around).
-
-    // Extending the ThirdPersonController into "myThirdPersonController" make sure it uses the same name as in Tutorial.
-    
-    // Please bear with us for this little fake.
-	
-	public string playerName = string.Empty;
+{	
+	public string playerName = "TempName";
 	public Camera mainCamera = null;
+
 	GUIStyle style;
 	Vector2 offset;
+
+	void Start()
+	{
+		mainCamera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
+		SetOffset ();
+	}
 
 	public void SetOffset()
 	{
@@ -28,12 +26,11 @@ public class myThirdPersonController : ThirdPersonController
 
 	void OnGUI()
 	{
-		//ワールド座標からスクリーン座標を取得
 		Vector3 screenPos = mainCamera.WorldToScreenPoint(transform.position);
-
 		if (screenPos.z > 0)
 		{
 			GUI.Label(new Rect(screenPos.x - offset.x / 2 , Screen.height - screenPos.y - offset.y, 220, 30), playerName, style);
 		}
 	}
+
 }
