@@ -13,8 +13,8 @@ public class LoginSceneController : MonoBehaviour
 	public void OnClickLoginButton()
 	{
 		if(inputField.text.Length == 0) return;
-
-		GameController.Instance.SetPlayerName(inputField.text);
+        inputField.text = inputField.text.Replace("\r", "").Replace("\n", "");
+        GameController.Instance.SetPlayerName(inputField.text);
 		Application.LoadLevel(SceneName.ChatUni);
 	}
 }
